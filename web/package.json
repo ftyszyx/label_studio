@@ -34,11 +34,6 @@
     "test:watch:affected": "yarn test --watch",
     "postinstall": "npx -y copy-files-from-to"
   },
-  "husky": {
-    "hooks": {
-      "post-checkout": "npx -y copy-files-from-to"
-    }
-  },
   "private": true,
   "dependencies": {
     "@martel/audio-file-decoder": "^2.3.15",
