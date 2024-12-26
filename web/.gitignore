@@ -121,4 +121,4 @@ libs/datamanager/e2e/output
 
 libs/datamanager/.cache
 
-dist/
+dist
