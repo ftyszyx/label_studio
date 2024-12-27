@@ -47,7 +47,7 @@ COPY label_studio label_studio
 COPY label_studio_sdk label_studio_sdk
 
 RUN --mount=type=cache,target=$PIP_CACHE_DIR,sharing=locked \
-    pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ \
+    pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ &&\
     python3 label_studio/manage.py collectstatic --no-input
 
 
