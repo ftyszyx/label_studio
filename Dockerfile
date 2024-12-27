@@ -41,6 +41,15 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_DEFAULT_TIMEOUT=100 \
     PIP_CACHE_DIR="/.cache" 
 
+
+RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
+    --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
+    set -eux; \
+    apt-get update; \
+    apt-get install --no-install-recommends -y \
+            build-essential git; \
+    apt-get autoremove -y
+    
 WORKDIR /label-studio
 COPY requirements.txt .
 COPY label_studio label_studio
