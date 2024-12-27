@@ -2,15 +2,13 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
 import os
-import sys 
-#curpath=os.path.abspath(".")
-#print(f'import paht add:{curpath}')
-# sys.path.append("../") 
+import sys
+
 sys.path.append(".")
 
 
-if __name__ == '__main__':
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings.label_studio')
+if __name__ == "__main__":
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings.label_studio")
     # os.environ.setdefault('DEBUG', 'True')
     try:
         from django.conf import settings
@@ -20,7 +18,7 @@ if __name__ == '__main__':
         runserver.default_port = settings.INTERNAL_PORT
 
     except ImportError as exc:
-         print("import err")
+        print("import err")
     #     raise ImportError(
     #         "Couldn't import Django. Are you sure it's installed and "
     #         'available on your PYTHONPATH environment variable? Did you '
