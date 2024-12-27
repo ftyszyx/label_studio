@@ -10,7 +10,7 @@ python 3.10
 
 ```
 conda activate p310
-pip install -r requirement.txt -i https://mirrors.aliyun.com/pypi/simple/
+pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 
 ```
 

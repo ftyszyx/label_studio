@@ -61,5 +61,5 @@ requests-mock ==1.12.1
 typing_extensions ==4.9.0
 jsf ==0.11.2
 bleach==5.0.1
-pyuwsgi==2.0.28
+pyuwsgi==2.0.28.post1
 uwsgitop==0.12
