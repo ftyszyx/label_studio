@@ -7,7 +7,7 @@ exec 3>&1
 
 
 if [ "$1" = "nginx" ]; then
-  exec nginx -c $OPT_DIR/nginx/nginx.conf -e /dev/stderr
+  exec nginx -c /etc/nginx/nginx.conf -e /dev/stderr
 elif [ "$1" = "label-studio-uwsgi" ]; then
   exec uwsgi --ini /label-studio/deploy/uwsgi.ini
 elif [ "$1" = "label-studio-migrate" ]; then
