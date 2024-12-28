@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     ports:
       - "8081:8085"
-      - "8082:8086"
+      # - "8082:8086"
     depends_on:
       - app
     environment:
@@ -42,11 +42,13 @@ services:
     image: pgautoupgrade/pgautoupgrade:13-alpine
     hostname: db
     restart: unless-stopped
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - ${POSTGRES_DATA_DIR}:/var/lib/postgresql/data
+      - ./postgres-data:/var/lib/postgresql/data
       - ./deploy/pgsql/certs:/var/lib/postgresql/certs:ro

@@ -3,7 +3,9 @@
 
 import os
 import sys
+
 sys.path.append('/label-studio')
+
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
