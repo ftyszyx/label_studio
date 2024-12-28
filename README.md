@@ -23,3 +23,9 @@ python label_studio/manage.py collectstatic
 python label_studio/manage.py runserver
 
 ```
+
+##
+
+```
+docker run -it -p 8080:8080  heartexlabs/label-studio:latest label-studio --log-level DEBUG
+```

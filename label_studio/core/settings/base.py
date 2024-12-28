@@ -15,7 +15,6 @@ import os
 import re
 import sys
 from datetime import timedelta 
-# sys.path.append(".")
 
 from django.core.exceptions import ImproperlyConfigured
 

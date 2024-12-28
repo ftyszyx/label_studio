@@ -68,15 +68,13 @@ RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
     apt-get autoremove -y
 
 COPY requirements.txt .
-COPY label_studio label_studio
-COPY label_studio_sdk label_studio_sdk
-
 RUN --mount=type=cache,target=$PIP_CACHE_DIR,sharing=locked \
     pip install --cache-dir $PIP_CACHE_DIR -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ 
-
 RUN set -ex;\
     python3 -m pip show pyuwsgi;\
     uwsgi --version
+COPY label_studio label_studio
+COPY label_studio_sdk label_studio_sdk
 
 RUN python3 label_studio/manage.py collectstatic --no-input 
 
