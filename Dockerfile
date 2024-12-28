@@ -32,40 +32,6 @@ COPY pyproject.toml ../pyproject.toml
 RUN --mount=type=cache,target=${YARN_CACHE_FOLDER},sharing=locked \
     --mount=type=cache,target=${NX_CACHE_DIRECTORY},sharing=locked \
     yarn run build
-##-------------------------------------------------------install python lib-------------------
-RUN echo "web build ok,build python"
-FROM python:${PYTHON_VERSION}-slim AS venv-builder
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=off \
-    PIP_DISABLE_PIP_VERSION_CHECK=on \
-    PIP_DEFAULT_TIMEOUT=100 \
-    PIP_CACHE_DIR="/root/.cache/pip" 
-ENV VENV_PATH="/label-studio/.venv"
-ENV PATH="$VENV_PATH/bin:$PATH"
-
-
-RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
-    --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
-    set -eux; \
-    apt-get update; \
-    #--no-install-recommends: 只安装必需依赖，不安装推荐的包
-    apt-get install --no-install-recommends -y \
-    #安装构建工具和 Git build-essential: 包含基本的编译工具（gcc, make 等）
-            build-essential git; \
-    #删除不再需要的依赖包
-    apt-get autoremove -y
-    
-WORKDIR /label-studio
-COPY requirements.txt .
-COPY label_studio label_studio
-COPY label_studio_sdk label_studio_sdk
-
-RUN --mount=type=cache,target=$PIP_CACHE_DIR,sharing=locked \
-    python3 -m venv --copies $VENV_PATH &&\
-    pip install --cache-dir $PIP_CACHE_DIR -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ &&\
-    python3 label_studio/manage.py collectstatic --no-input
-
 
 
 ##-------------------------------------------------------build production-------------------
@@ -75,7 +41,11 @@ ENV LS_DIR=/label-studio \
     HOME=/label-studio \
     LABEL_STUDIO_BASE_DATA_DIR=/label-studio/data \
     DJANGO_SETTINGS_MODULE=core.settings.label_studio \
-    PATH="/label-studio/.venv/bin:$PATH" \
+    # python 
+    PIP_CACHE_DIR="/root/.cache/pip"\ 
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
     #禁用 Python 的输出缓冲
     PYTHONUNBUFFERED=1 \
     #阻止 Python 生成 .pyc 文件（字节码缓存）
@@ -88,12 +58,27 @@ RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
     --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
     set -eux; \
     apt-get update; \
-    apt-get install --no-install-recommends -y nginx; \
+     #--no-install-recommends: 只安装必需依赖，不安装推荐的包
+    apt-get install --no-install-recommends -y \
+    #安装构建工具和 Git build-essential: 包含基本的编译工具（gcc, make 等）
+    nginx build-essential git; \
      # 验证 Nginx 安装
     nginx -v; \
-    # 清理不需要的依赖
+    #删除不再需要的依赖包
     apt-get autoremove -y
 
+COPY requirements.txt .
+COPY label_studio label_studio
+COPY label_studio_sdk label_studio_sdk
+
+RUN --mount=type=cache,target=$PIP_CACHE_DIR,sharing=locked \
+    pip install --cache-dir $PIP_CACHE_DIR -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ 
+
+RUN set -ex;\
+    python3 -m pip show pyuwsgi;\
+    uwsgi --version
+
+RUN python3 label_studio/manage.py collectstatic --no-input 
 
 RUN set -eux; \
     mkdir -p $LS_DIR $LABEL_STUDIO_BASE_DATA_DIR && \
@@ -107,8 +92,11 @@ COPY --chown=1001:0 README.md .
 COPY --chown=1001:0 deploy deploy
 
 # Copy files from build stages
-COPY --chown=1001:0 --from=venv-builder               $LS_DIR                                           $LS_DIR
 COPY --chown=1001:0 --from=frontend-builder           $LS_DIR/web/dist                                  $LS_DIR/web/dist
+
+RUN set -ex;\
+    python3 -m pip show pyuwsgi;\
+    uwsgi --version
 
 USER 1001
 

@@ -36,7 +36,7 @@ services:
       - JSON_LOG=1
     volumes:
       - ./mydata:/label-studio/data:rw
-    command: label-studio-uwsgi
+    command: uwsgi
 
   db:
     image: pgautoupgrade/pgautoupgrade:13-alpine

@@ -30,3 +30,4 @@ label_studio_sdk/**/*.pyc
 !LICENSE
 !pyproject.toml
 !poetry.lock
+**/__pycache__
