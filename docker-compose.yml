@@ -33,7 +33,7 @@ services:
       - POSTGRE_PORT=5432
       - POSTGRE_HOST=db
       - LABEL_STUDIO_HOST=${LABEL_STUDIO_HOST:-}
-      - JSON_LOG=1
+      - JSON_LOG=0
     volumes:
       - ./mydata:/label-studio/data:rw
     command: uwsgi
