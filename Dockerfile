@@ -62,7 +62,7 @@ COPY label_studio label_studio
 COPY label_studio_sdk label_studio_sdk
 
 RUN --mount=type=cache,target=$PIP_CACHE_DIR,sharing=locked \
-    python3 -m venv --copys $VENV_PATH &&\
+    python3 -m venv --copies $VENV_PATH &&\
     pip install --cache-dir $PIP_CACHE_DIR -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ &&\
     python3 label_studio/manage.py collectstatic --no-input
 
@@ -75,6 +75,7 @@ ENV LS_DIR=/label-studio \
     HOME=/label-studio \
     LABEL_STUDIO_BASE_DATA_DIR=/label-studio/data \
     DJANGO_SETTINGS_MODULE=core.settings.label_studio \
+    PATH="/label-studio/.venv/bin:$PATH" \
     #禁用 Python 的输出缓冲
     PYTHONUNBUFFERED=1 \
     #阻止 Python 生成 .pyc 文件（字节码缓存）
