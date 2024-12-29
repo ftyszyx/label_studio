@@ -10,9 +10,7 @@ on:
         type: string
 
 env:
-  # 设置 Docker Hub 仓库名称
-  REGISTRY: docker.io
-  DOCKER_USERNAME: ftyszyx752 # 添加你的 Docker Hub 用户名
+  DOCKER_USERNAME: ftyszyx752
   IMAGE_NAME: label-studio
 
 jobs:
@@ -46,3 +44,11 @@ jobs:
           tags: |
             ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ inputs.version }}
             ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+          cache-from: |
+            type=registry,ref=${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:buildcache
+            type=gha
+          cache-to: |
+            type=registry,ref=${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
+            type=gha,mode=max
+          build-args: |
+            BUILDKIT_INLINE_CACHE=1
