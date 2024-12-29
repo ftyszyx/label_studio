@@ -1,7 +1,7 @@
 services:
   nginx:
-    build: .
-    image: ftyszyx752/label-studio:${VERSION:-latest}
+    # build: .
+    image: ftyszyx752/label-studio:1.0.2
     restart: unless-stopped
     ports:
       - "8081:8085"
@@ -14,12 +14,13 @@ services:
       - ./mydata:/label-studio/data:rw
       - ./deploy/nginx/certs:/certs:ro
     command: nginx
+    user: "1001"
 
   app:
     stdin_open: true
     tty: true
-    build: .
-    image: ftyszyx752/label-studio:${VERSION:-latest}
+    # build: .
+    image: ftyszyx752/label-studio:1.0.2
     restart: unless-stopped
     expose:
       - "8000"
@@ -37,6 +38,7 @@ services:
     volumes:
       - ./mydata:/label-studio/data:rw
     command: uwsgi
+    user: "1001"
 
   db:
     image: pgautoupgrade/pgautoupgrade:13-alpine

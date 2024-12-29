@@ -29,3 +29,9 @@ python label_studio/manage.py runserver
 ```
 docker run -it -p 8080:8080  heartexlabs/label-studio:latest label-studio --log-level DEBUG
 ```
+
+## 未处理问题
+
+docker 运行后：
+File "<frozen os>", line 225, in makedirs
+label_studio-app-1 | PermissionError: [Errno 13] Permission denied: '/label-studio/data/media'
