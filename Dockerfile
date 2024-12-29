@@ -89,6 +89,9 @@ COPY --chown=1001:0 deploy/default.conf /etc/nginx/nginx.conf
 COPY --chown=1001:0 README.md .
 COPY --chown=1001:0 deploy deploy
 
+# 添加执行权限
+RUN chmod +x ./deploy/docker-entrypoint.sh
+
 # Copy files from build stages
 COPY --chown=1001:0 --from=frontend-builder           $LS_DIR/web/dist                                  $LS_DIR/web/dist
 
