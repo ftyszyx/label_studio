@@ -1,7 +1,7 @@
 services:
   nginx:
     build: .
-    image: zyx/label-studio:latest
+    image: ftyszyx752/label-studio:${VERSION:-latest}
     restart: unless-stopped
     ports:
       - "8081:8085"
@@ -19,7 +19,7 @@ services:
     stdin_open: true
     tty: true
     build: .
-    image: zyx/label-studio:latest
+    image: ftyszyx752/label-studio:${VERSION:-latest}
     restart: unless-stopped
     expose:
       - "8000"

@@ -12,7 +12,8 @@ on:
 env:
   # 设置 Docker Hub 仓库名称
   REGISTRY: docker.io
-  IMAGE_NAME: label-studio # 与你的docker-compose.yml中的image名称保持一致
+  DOCKER_USERNAME: ftyszyx752 # 添加你的 Docker Hub 用户名
+  IMAGE_NAME: label-studio
 
 jobs:
   build:
@@ -36,16 +37,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          push: true
-          tags: user/app:latest
-
-      # 简化标签策略，使用手动输入的版本号
+      # 构建并推送 Docker 镜像
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.version }}
+          tags: |
+            ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ inputs.version }}
+            ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
