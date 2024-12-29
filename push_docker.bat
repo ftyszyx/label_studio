@@ -1,0 +1,1 @@
+docker push zyx/label-studio:latest
