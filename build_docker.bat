@@ -1,2 +1,2 @@
 
-docker build -t zyx/label-studio:latest . --progress=plain
+docker build -t label-studio . --progress=plain
